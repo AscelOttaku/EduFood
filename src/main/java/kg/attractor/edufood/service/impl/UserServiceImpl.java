@@ -1,5 +1,6 @@
 package kg.attractor.edufood.service.impl;
 
+import kg.attractor.edufood.dto.AuthorityDto;
 import kg.attractor.edufood.dto.UserDto;
 import kg.attractor.edufood.mapper.UserMapper;
 import kg.attractor.edufood.model.User;
@@ -25,19 +26,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto findUserByEmail(String email) {
-        User user= userRepository.findUserByEmail(email).orElseThrow(()->new NoSuchElementException("jkdsc"));
+        User user= userRepository.findUserByEmail(email)
+                .orElseThrow(()-> new NoSuchElementException("jkdsc"));
         return userMapper.mapToDto(user);
     }
 
     @Override
-    public Boolean checkUserInDB(String email) {
-        User user = userRepository.findUserByEmail(email).orElse(null);
-        return user != null;
+    public Boolean checkEmailForUniquness(String email) {
+        return userRepository.findUserByEmail(email)
+                .isPresent();
     }
-
-
+    
     public MyUserDetails getAuthUserDetails() {
         return (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
-
 }

@@ -19,9 +19,11 @@ public class History implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @OneToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
     private Order order;
+
     @Column(name = "amount")
     private int amount;
 }

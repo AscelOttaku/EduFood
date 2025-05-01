@@ -1,6 +1,5 @@
 package kg.attractor.edufood.dto;
 
-import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 @Getter

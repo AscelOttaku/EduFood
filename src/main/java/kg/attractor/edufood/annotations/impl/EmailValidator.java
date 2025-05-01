@@ -1,9 +1,9 @@
-package kg.attractor.edufood.customizesValidators.impl;
+package kg.attractor.edufood.annotations.impl;
 
 
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import kg.attractor.edufood.customizesValidators.ValidEmail;
+import kg.attractor.edufood.annotations.ValidEmail;
 import kg.attractor.edufood.service.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -13,6 +13,6 @@ public class EmailValidator implements ConstraintValidator<ValidEmail, String> {
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
-        return !userService.checkUserInDB(email);
+        return !userService.checkEmailForUniquness(email);
     }
 }

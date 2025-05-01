@@ -1,7 +1,7 @@
 package kg.attractor.edufood.dto;
 
 import jakarta.validation.constraints.*;
-import kg.attractor.edufood.customizesValidators.ValidEmail;
+import kg.attractor.edufood.annotations.ValidEmail;
 import lombok.*;
 
 @Getter
@@ -27,5 +27,5 @@ public class UserDto {
             message = "Should contain at least one uppercase letter, one number")
     private String password;
 
-    private AuthorityDto authority = new AuthorityDto();
+    private AuthorityDto authority;
 }

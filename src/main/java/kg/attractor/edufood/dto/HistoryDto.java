@@ -7,7 +7,10 @@ import lombok.Builder;
 public class HistoryDto {
 
     private Long id;
+
     @NotNull
     private Long orderId;
+
+    private int amount;
 }
 
