@@ -3,16 +3,22 @@ package kg.attractor.edufood.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Builder
 public class DishDto {
     private Long id;
+
     @NotBlank
     private String name;
+
     @NotNull
     private Long restaurantId;
+
     @NotNull
     @Positive
     private int price;
