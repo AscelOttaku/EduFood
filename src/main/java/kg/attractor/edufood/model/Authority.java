@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@Table(name = "roles")
+@Table(name = "authority")
 public class Authority implements Serializable {
 
     @Serial

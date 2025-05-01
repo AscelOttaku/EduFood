@@ -1,14 +1,13 @@
--- Insert into authority (assuming 1 = USER authority)
-INSERT INTO authority (authority) VALUES
+INSERT INTO authority (role) VALUES
     ('USER');
 
 -- Insert 5 users
 INSERT INTO users (email, password, name, authority_id) VALUES
-                                                            ('user1@example.com', 'pass1', 'User One', 1),
-                                                            ('user2@example.com', 'pass2', 'User Two', 1),
-                                                            ('user3@example.com', 'pass3', 'User Three', 1),
-                                                            ('user4@example.com', 'pass4', 'User Four', 1),
-                                                            ('user5@example.com', 'pass5', 'User Five', 1);
+                                                            ('user1@example.com', 'pass1', 'User One', (select id from AUTHORITY where role ilike 'USER')),
+                                                            ('user2@example.com', 'pass2', 'User Two', (select id from AUTHORITY where role ilike 'USER')),
+                                                            ('user3@example.com', 'pass3', 'User Three', (select id from AUTHORITY where role ilike 'USER')),
+                                                            ('user4@example.com', 'pass4', 'User Four', (select id from AUTHORITY where role ilike 'USER')),
+                                                            ('user5@example.com', 'pass5', 'User Five', (select id from AUTHORITY where role ilike 'USER'));
 
 -- Insert 10 restaurants
 INSERT INTO restaurant (name) VALUES
