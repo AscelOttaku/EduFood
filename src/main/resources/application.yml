@@ -18,6 +18,9 @@ spring:
   liquibase:
     change-log: classpath://db/changelog/master.yml
 
+  mvc:
+    static-path-pattern: /static/**
+
   freemarker:
     expose-session-attributes: true
     expose-spring-macro-helpers: true
