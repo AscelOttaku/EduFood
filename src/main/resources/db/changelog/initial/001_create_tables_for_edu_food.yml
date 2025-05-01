@@ -1,0 +1,164 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: eduFood
+      changes:
+        - createTable:
+            tableName: authority
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: role
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 2
+      author: eduFood
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: VARCHAR(255)
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: authority_id
+                  type: BIGINT
+        - addForeignKeyConstraint:
+            baseTableName: users
+            baseColumnNames: authority_id
+            referencedTableName: authority
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            constraintName: fk_users_authority
+
+  - changeSet:
+      id: 3
+      author: eduFood
+      changes:
+        - createTable:
+            tableName: restaurant
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+
+  - changeSet:
+      id: 4
+      author: eduFood
+      changes:
+        - createTable:
+            tableName: dish
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+              - column:
+                  name: restaurant_id
+                  type: BIGINT
+              - column:
+                  name: price
+                  type: INT
+        - addForeignKeyConstraint:
+            baseTableName: dish
+            baseColumnNames: restaurant_id
+            referencedTableName: restaurant
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            constraintName: fk_dish_restaurant
+
+  - changeSet:
+      id: 5
+      author: eduFood
+      changes:
+        - createTable:
+            tableName: order
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: user_email
+                  type: VARCHAR(255)
+              - column:
+                  name: dish_id
+                  type: BIGINT
+        - addForeignKeyConstraint:
+            baseTableName: order
+            baseColumnNames: dish_id
+            referencedTableName: dish
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            constraintName: fk_order_dish
+
+  - changeSet:
+      id: 6
+      author: eduFood
+      changes:
+        - createTable:
+            tableName: history
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: BIGINT
+              - column:
+                  name: amount
+                  type: INT
+        - addForeignKeyConstraint:
+            baseTableName: history
+            baseColumnNames: order_id
+            referencedTableName: order
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            constraintName: fk_history_order

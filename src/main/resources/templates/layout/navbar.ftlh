@@ -35,7 +35,7 @@
 
                 <#if user??>
                     <div class="dropdown">
-                        <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" id="userMenu"
+                        <a class="btn btn-outline-light dropdown-toggle" href="#" authority="button" id="userMenu"
                            data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle me-1"></i> ${user.name!"Профиль"}
                         </a>

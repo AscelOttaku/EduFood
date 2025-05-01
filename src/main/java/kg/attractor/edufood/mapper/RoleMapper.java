@@ -1,13 +1,13 @@
 package kg.attractor.edufood.mapper;
 
 import kg.attractor.edufood.dto.RoleDto;
-import kg.attractor.edufood.model.Role;
+import kg.attractor.edufood.model.Authority;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface RoleMapper {
 
-    RoleDto mapToDto(Role role);
+    RoleDto mapToDto(Authority authority);
 
-    Role mapToEntity(RoleDto roleDto);
+    Authority mapToEntity(RoleDto roleDto);
 }

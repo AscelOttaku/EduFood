@@ -10,8 +10,8 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@Table(name = "roles")
-public class Role implements Serializable {
+@Table(name = "authority")
+public class Authority implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
@@ -21,6 +21,6 @@ public class Role implements Serializable {
     @Column(name = "id", updatable = false)
     private Long roleId;
 
-    @Column(name = "role_name", nullable = false)
-    private String roleName;
+    @Column(name = "role", nullable = false)
+    private String name;
 }

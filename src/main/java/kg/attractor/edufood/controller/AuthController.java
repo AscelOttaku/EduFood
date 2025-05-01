@@ -17,7 +17,6 @@ public class AuthController {
     @GetMapping("registration")
     public String register(Model model) {
         UserDto userDto = new UserDto();
-        userDto.setPhoneNumber("+996");
         model.addAttribute("userDto", userDto);
         return "auth/register";
     }

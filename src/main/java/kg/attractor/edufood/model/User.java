@@ -23,19 +23,10 @@ public class User implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "age", nullable = false)
-    private Integer age;
-
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "phone_number", unique = true, nullable = false)
-    private String phoneNumber;
-
-    @Column(name = "avatar")
-    private String avatar;
-
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id")
-    private Role role;
+    @JoinColumn(name = "authority_id")
+    private Authority authority;
 }
