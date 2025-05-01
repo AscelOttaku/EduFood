@@ -10,17 +10,14 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Entity
-@Table(name = "authority")
-public class Authority implements Serializable {
-
+@Table(name = "restaurant")
+public class Restaurant implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
     private Long id;
-
-    @Column(name = "role", nullable = false)
+    @Column(nullable = false, name="name")
     private String name;
 }

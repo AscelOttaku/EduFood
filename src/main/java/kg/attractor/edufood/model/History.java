@@ -7,20 +7,21 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 
+@Entity
+@Table(name = "history")
 @Getter
 @Setter
-@Entity
-@Table(name = "authority")
-public class Authority implements Serializable {
 
+public class History implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", updatable = false)
     private Long id;
-
-    @Column(name = "role", nullable = false)
-    private String name;
+    @OneToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
+    private Order order;
+    @Column(name = "amount")
+    private int amount;
 }

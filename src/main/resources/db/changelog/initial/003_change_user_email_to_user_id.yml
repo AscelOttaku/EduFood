@@ -1,0 +1,24 @@
+databaseChangeLog:
+- changeSet:
+    id: 7
+    author: eduFood
+    changes:
+      - dropColumn:
+          columnName: user_email
+          tableName: order
+
+      - addColumn:
+          tableName: order
+          columns:
+            - column:
+                name: user_id
+                type: BIGINT
+
+      - addForeignKeyConstraint:
+          baseTableName: order
+          baseColumnNames: user_id
+          referencedTableName: users
+          referencedColumnNames: id
+          onDelete: CASCADE
+          onUpdate: CASCADE
+          constraintName: fk_order_user

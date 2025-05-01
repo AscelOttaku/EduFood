@@ -1,15 +1,11 @@
 package kg.attractor.edufood.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.Builder;
 
-@Getter
-@Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class RoleDto {
+public class RestaurantDto {
     private Long id;
     @NotBlank
-    private String roleName;
+    private String name;
 }
