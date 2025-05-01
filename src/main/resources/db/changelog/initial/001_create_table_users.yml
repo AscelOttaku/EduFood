@@ -1,0 +1,36 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001_create_table_users
+      author: Kanybek Zhanybekov
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: name
+                  type: varchar(45)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: age
+                  type: int
+              - column:
+                  name: email
+                  type: varchar(65)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone_number
+                  type: varchar(45)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: avatar
+                  type: varchar(45)

@@ -1,0 +1,41 @@
+package kg.attractor.edufood.model;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.Serial;
+import java.io.Serializable;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "users")
+public class User implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @Column(name = "email", unique = true, updatable = false, nullable = false)
+    private String email;
+
+    @Column(name = "name", nullable = false)
+    private String name;
+
+    @Column(name = "age", nullable = false)
+    private Integer age;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    @Column(name = "phone_number", unique = true, nullable = false)
+    private String phoneNumber;
+
+    @Column(name = "avatar")
+    private String avatar;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role role;
+}

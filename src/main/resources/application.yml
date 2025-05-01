@@ -1,0 +1,32 @@
+spring:
+  application:
+    name:
+      EduFood
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  datasource:
+    url: jdbc:h2:./db/edu_food;AUTO_SERVER=TRUE
+    username: edu_food
+    password: qwerty
+    driver-class-name: org.h2.Driver
+    hikari:
+      maximum-pool-size: 5
+
+  liquibase:
+    change-log: classpath://db/changelog/master.yml
+
+  freemarker:
+    expose-session-attributes: true
+    expose-spring-macro-helpers: true
+
+logging:
+  level:
+    org:
+      springframework:
+        security: INFO
+        web:
+          servlet:
+            DispatcherServlet: INFO
