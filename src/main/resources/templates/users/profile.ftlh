@@ -17,7 +17,7 @@
         <div class="profile-header">
             <div class="d-flex justify-content-between align-items-center">
                 <h1 class="profile-title">
-                    <i class="bi bi-person-badge me-2"></i>Профиль ${userDto.accountType}
+                    <i class="bi bi-person-badge me-2"></i>Профиль ${userDto.authority.name}
                 </h1>
                 <a href="/userDtos/update/profile" class="btn btn-outline-secondary">
                     <i class="bi bi-pencil-square me-2"></i>Редактировать
@@ -45,29 +45,13 @@
                                         <i class="bi bi-person-lines-fill me-2"></i>Основная информация
                                     </h5>
                                     <div class="mb-2">
-                                        <span class="fw-bold">Имя Фамилия:</span>
-                                        <p class="mb-0 ps-3">${userDto.name} ${userDto.surname}</p>
+                                        <span class="fw-bold">Имя :</span>
+                                        <p class="mb-0 ps-3">${userDto.name} </p>
                                     </div>
+
                                     <div class="mb-2">
-                                        <span class="fw-bold">Возраст:</span>
-                                        <p class="mb-0 ps-3">${userDtoDto.age}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="card h-100 info-card">
-                                <div class="card-body">
-                                    <h5 class="card-title text-muted mb-3">
-                                        <i class="bi bi-telephone-fill me-2"></i>Контакты
-                                    </h5>
-                                    <div class="mb-2">
-                                        <span class="fw-bold">Email:</span>
-                                        <p class="mb-0 ps-3">${userDto.email}</p>
-                                    </div>
-                                    <div>
-                                        <span class="fw-bold">Телефон:</span>
-                                        <p class="mb-0 ps-3">${userDto.phoneNumber}</p>
+                                        <span class="fw-bold">Email :</span>
+                                        <p class="mb-0 ps-3">${userDto.email} </p>
                                     </div>
                                 </div>
                             </div>

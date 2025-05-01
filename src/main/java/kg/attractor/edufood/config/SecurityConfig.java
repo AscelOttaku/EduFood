@@ -39,6 +39,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
 
+                                // resumes
+
+                                .requestMatchers("users/profile").fullyAuthenticated()
+
                                 .anyRequest().permitAll());
 
         return http.build();

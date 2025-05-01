@@ -5,7 +5,7 @@
         <div class="custom-login-card">
             <div class="custom-brand">
                 <div class="custom-brand-logo"></div>
-                <h1>Welcome To Job Search Application</h1>
+                <h1>Welcome To Edu Food</h1>
                 <p>Enter Your Account Data</p>
             </div>
 

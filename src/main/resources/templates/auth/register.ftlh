@@ -8,42 +8,30 @@
     <div class="custom-login-card">
     <div class="custom-brand">
         <div class="custom-brand-logo"></div>
-        <h1>Welcome To Job Search Application</h1>
+        <h1>Welcome To Edu Food</h1>
         <p>Enter Your Account Data</p>
     </div>
 
-    <form method="post" action="/users/registration" id="registerForm">
+    <form method="post" action="/users/register" id="registerForm">
         <#if _csrf??>
             <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
                    value="${(_csrf.token)!'csrf-token'}"/>
         </#if>
         <div class="custom-form-group">
             <label for="name">Name</label>
-            <@spring.formInput "user.name", 'class="custom-form-control" id="name" placeholder="John" required'/>
-            <@spring.showErrors "<br>" "text-danger small"/>
-        </div>
-
-        <div class="custom-form-group">
-            <label for="age">Age</label>
-            <@spring.formInput "user.age", 'class="custom-form-control" id="age" min="5" max="140" required'/>
+            <@spring.formInput "userDto.name", 'class="custom-form-control" id="name" placeholder="John" '/>
             <@spring.showErrors "<br>" "text-danger small"/>
         </div>
 
         <div class="custom-form-group">
             <label for="email">Email</label>
-            <@spring.formInput "user.email", 'class="custom-form-control" id="email" placeholder="email@" type="email" required'/>
+            <@spring.formInput "userDto.email", 'class="custom-form-control" id="email" placeholder="email@" type="email" '/>
             <@spring.showErrors "<br>" "text-danger small"/>
         </div>
 
         <div class="custom-form-group">
             <label for="password">Password</label>
-            <@spring.formInput "user.password", 'class="custom-form-control" id="password" type="password" placeholder="Enter your password" autocomplete="new-password" required'/>
-            <@spring.showErrors "user.password" "text-danger small"/>
-        </div>
-
-        <div class="custom-form-group">
-            <label for="phoneNumber">Phone Number</label>
-            <@spring.formInput "user.phoneNumber", 'class="custom-form-control" id="phoneNumber" placeholder="+996..." required'/>
+            <@spring.formInput "userDto.password", 'class="custom-form-control" id="password" type="password" placeholder="Enter your password" autocomplete="new-password" '/>
             <@spring.showErrors "<br>" "text-danger small"/>
         </div>
 

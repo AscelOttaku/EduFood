@@ -19,7 +19,7 @@ public class UserController {
     private final UserService userService;
     private final AuthService authService;
 
-    @GetMapping("users/profile")
+    @GetMapping("profile")
     public String getProfile(Model model) {
         model.addAttribute("userDto", authService.getAuthUserDetails().user());
         return "users/profile";
@@ -37,6 +37,6 @@ public class UserController {
         }
 
         userService.createUser(userDto);
-        return "redirect:/users";
+        return "redirect:/users/profile";
     }
 }
