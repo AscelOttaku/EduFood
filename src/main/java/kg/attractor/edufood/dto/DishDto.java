@@ -25,7 +25,7 @@ public class DishDto implements Serializable {
 
     @NotNull(message = "restaurant id cannot be null")
     @Positive(message = "restaurant id must be positive")
-    private Long restaurantId;
+    private RestaurantDto restaurantId;
 
     @NotNull
     @Positive
