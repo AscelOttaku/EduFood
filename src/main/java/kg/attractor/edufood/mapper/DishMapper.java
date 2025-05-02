@@ -2,15 +2,39 @@ package kg.attractor.edufood.mapper;
 
 import kg.attractor.edufood.dto.DishDto;
 import kg.attractor.edufood.model.Dish;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import kg.attractor.edufood.model.Restaurant;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Service;
 
-@Mapper(componentModel = "spring")
-public interface DishMapper {
+@Service
+public class DishMapper {
 
-    @Mapping(target = "restaurantId", source = "restaurant.id")
-    DishDto mapToDto(Dish dish);
+    private RestaurantMapper restaurantMapper;
 
-    @Mapping(target = "restaurant.id", source = "restaurantId")
-    Dish mapToEntity(DishDto dishDto);
+    @Autowired
+    private  void setVacancyMapper(@Lazy  RestaurantMapper restaurantMapper) {
+        this.restaurantMapper=restaurantMapper;
+    }
+
+    public DishDto mapToDto(Dish dish) {
+
+        return DishDto.builder()
+                .id(dish.getId())
+                .name(dish.getName())
+                .restaurantId(restaurantMapper.mapToDto(dish.getRestaurant()))
+                .price(dish.getPrice())
+                .build();
+    }
+
+    public Dish mapToEntity(DishDto dto) {
+
+        Dish dish = new Dish();
+        dish.setId(dto.getId());
+        dish.setName(dto.getName());
+
+        dish.setRestaurant(restaurantMapper.mapToEntity(dto.getRestaurantId()));
+        dish.setPrice(dto.getPrice());
+        return dish;
+    }
 }

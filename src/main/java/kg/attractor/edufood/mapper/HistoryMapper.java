@@ -2,16 +2,31 @@ package kg.attractor.edufood.mapper;
 
 import kg.attractor.edufood.dto.HistoryDto;
 import kg.attractor.edufood.model.History;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
-@Mapper(componentModel = "spring")
-public interface HistoryMapper {
+@Service
+@RequiredArgsConstructor
+public class HistoryMapper {
 
-    @Mapping(target = "orderId", source = "order.id")
-    HistoryDto mapToDto(History history);
+    private final OrderMapper orderMapper;
 
-    @Mapping(target = "order.id", source = "orderId")
-    History mapToEntity(HistoryDto historyDto);
+    public HistoryDto mapToDto(History history) {
 
+        return HistoryDto.builder()
+                .id(history.getId())
+                .orderId(orderMapper.mapToDto(history.getOrder()))
+                .amount(history.getAmount())
+                .build();
+    }
+
+    public History mapToEntity(HistoryDto dto) {
+
+        History history = new History();
+        history.setId(dto.getId());
+        history.setOrder(orderMapper.mapToEntity(dto.getOrderId()));
+        history.setAmount(dto.getAmount());
+
+        return history;
+    }
 }

@@ -2,14 +2,25 @@ package kg.attractor.edufood.mapper;
 
 import kg.attractor.edufood.dto.AuthorityDto;
 import kg.attractor.edufood.model.Authority;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Service;
 
-@Mapper(componentModel = "spring")
-public interface AuthorityMapper {
+@Service
+public class AuthorityMapper {
 
-    AuthorityDto mapToDto(Authority authority);
+    public AuthorityDto mapToDto(Authority authority) {
 
-    @Mapping(target = "authorityId", constant = "1L")
-    Authority mapToEntity(AuthorityDto authorityDto);
+        AuthorityDto dto = new AuthorityDto();
+        dto.setAuthorityId(authority.getAuthorityId());
+        dto.setName(authority.getName());
+        return dto;
+    }
+
+    public Authority mapToEntity(AuthorityDto dto) {
+
+        Authority authority = new Authority();
+        authority.setAuthorityId(dto.getAuthorityId());
+        authority.setName(dto.getName());
+        return authority;
+    }
 }
+

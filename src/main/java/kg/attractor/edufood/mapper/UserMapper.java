@@ -1,16 +1,42 @@
 package kg.attractor.edufood.mapper;
 
+import kg.attractor.edufood.dto.AuthorityDto;
 import kg.attractor.edufood.dto.UserDto;
-import kg.attractor.edufood.mapper.util.MapperUtil;
+import kg.attractor.edufood.model.Authority;
 import kg.attractor.edufood.model.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import kg.attractor.edufood.service.AuthorityService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
-@Mapper(componentModel = "spring", uses = {AuthorityMapper.class, MapperUtil.class})
-public interface UserMapper {
+@Service
+@RequiredArgsConstructor
+public class UserMapper {
 
-    UserDto mapToDto(User user);
+    private final PasswordEncoder passwordEncoder;
+    private final AuthorityMapper authorityMapper;
+    private final AuthorityService authorityService;
 
-    @Mapping(target = "password", qualifiedByName = "encodePassword")
-    User mapToEntity(UserDto user);
+    public UserDto mapToDto(User user) {
+
+        return UserDto.builder()
+                .email(user.getEmail())
+                .name(user.getName())
+                .password(user.getPassword())
+                .authority(authorityMapper.mapToDto(user.getAuthority()))
+                .build();
+    }
+
+    public User mapToEntity(UserDto dto) {
+
+        User user = new User();
+        user.setId(dto.getId());
+        user.setEmail(dto.getEmail());
+        user.setName(dto.getName());
+        user.setPassword(passwordEncoder.encode(dto.getPassword()));
+        user.setAuthority(authorityMapper.mapToEntity(authorityService.getAuthorityById(1L)));
+
+        return user;
+    }
 }

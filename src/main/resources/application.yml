@@ -34,5 +34,3 @@ logging:
         web:
           servlet:
             DispatcherServlet: INFO
-server:
-  port: 8080
