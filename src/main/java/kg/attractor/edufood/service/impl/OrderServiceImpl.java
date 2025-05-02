@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +26,14 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public Long saveOrder(OrderDto orderDto) {
-        orderDto.getDishes().forEach(dish -> dishService.findDishById(dish.getId()));
+        orderDto.getDishes()
+                .stream()
+                .filter(dish -> Objects.nonNull(dish) && Objects.nonNull(dish.getId()))
+                .forEach(dish -> dishService.findDishById(dish.getId()));
+
+        if (orderDto.getDishes().isEmpty())
+            throw new IllegalStateException("order cannot be performed without dishes");
+
         orderDto.setUser(authService.getAuthUser());
 
         return orderRepository.save(orderMapper.mapToEntity(orderDto))

@@ -30,7 +30,7 @@
                 <span class="total-value">${totalPrice} сом</span>
             </div>
 
-            <form name="order" method="post" action="orders" class="checkout-section">
+            <form name="dishes" method="post" action="orders" class="checkout-section">
                 <input type="hidden" value="${bucket.values}">
                 <button class="btn btn-checkout">
                     <i class="bi bi-cart-check"></i> Оформить заказ

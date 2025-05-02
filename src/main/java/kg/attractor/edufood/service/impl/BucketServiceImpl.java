@@ -64,6 +64,7 @@ public class BucketServiceImpl implements BucketService {
         return dishes;
     }
 
+
     @Override
     public Map<RestaurantDto, DishDto> getBucket() {
         HttpSession session = getSession();
