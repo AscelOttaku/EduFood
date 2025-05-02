@@ -1,9 +1,7 @@
 package kg.attractor.edufood.controller;
 
-import kg.attractor.edufood.dto.DishDto;
-import kg.attractor.edufood.dto.PageHolder;
 import kg.attractor.edufood.service.DishService;
-import lombok.Getter;
+import kg.attractor.edufood.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class DishController {
     private final DishService dishService;
+    private final RestaurantService restaurantService;
 
     @GetMapping("restaurants/{restaurantId}")
     public String findDishByRestaurantId(
@@ -25,6 +24,8 @@ public class DishController {
             @RequestParam(value = "size", required = false, defaultValue = "10") int size,
             Model model
     ) {
+        model.addAttribute("selectedRestaurantId", restaurantId);
+        model.addAttribute("restaurants", restaurantService.getAllRestaurants());
         model.addAttribute("dishesPage", dishService.findDishByRestaurantId(restaurantId, page, size));
         return "restaurants/restaurants";
     }

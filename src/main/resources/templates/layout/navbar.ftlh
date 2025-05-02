@@ -11,8 +11,13 @@
         <div class="collapse navbar-collapse" id="navbarContent">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="/vacancies/actives">
-                        <i class="bi bi-search me-1"></i> Dishes
+                    <a class="nav-link" href="/restaurants">
+                        <i class="bi bi-search me-1"></i> Restaurants
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/buckets">
+                        <i class="bi bi-search me-1"></i> Bucket
                     </a>
                 </li>
                 <li class="nav-item">

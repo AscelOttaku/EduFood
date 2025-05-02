@@ -1,5 +1,6 @@
 package kg.attractor.edufood.dto;
 
+import jakarta.validation.Valid;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,5 +15,5 @@ public class OrderDto {
 
     private UserDto user;
 
-    private List<DishDto> dishes;
+    private List<@Valid DishDto> dishes;
 }

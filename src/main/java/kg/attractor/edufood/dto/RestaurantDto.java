@@ -2,9 +2,11 @@ package kg.attractor.edufood.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.List;
-
+@Getter
+@Setter
 @Builder
 public class RestaurantDto {
     private Long id;
@@ -12,5 +14,5 @@ public class RestaurantDto {
     @NotBlank
     private String name;
 
-    private List<DishDto> dishes;
+    private PageHolder<DishDto> dishes;
 }
