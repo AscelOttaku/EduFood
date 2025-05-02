@@ -1,4 +1,4 @@
-package kg.attractor.edufood.annotations.impl;
+package kg.attractor.edufood.annotations.validator;
 
 
 import jakarta.validation.ConstraintValidator;

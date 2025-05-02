@@ -3,6 +3,7 @@ package kg.attractor.edufood.service.impl;
 import kg.attractor.edufood.dto.OrderDto;
 import kg.attractor.edufood.mapper.OrderMapper;
 import kg.attractor.edufood.repository.OrderRepository;
+import kg.attractor.edufood.service.AuthService;
 import kg.attractor.edufood.service.DishService;
 import kg.attractor.edufood.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +16,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
     private final DishService dishService;
+    private final AuthService authService;
 
     @Transactional
     @Override
     public Long saveOrder(OrderDto orderDto) {
-        dishService.findDishById(orderDto.getDishId());
+        orderDto.getDishes().forEach(dish -> dishService.findDishById(dish.getId()));
+        orderDto.setUser(authService.getAuthUser());
 
         return orderRepository.save(orderMapper.mapToEntity(orderDto))
                 .getId();

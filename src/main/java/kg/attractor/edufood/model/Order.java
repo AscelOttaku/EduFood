@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "order")
@@ -24,7 +25,11 @@ public class Order implements Serializable {
     @JoinColumn(name = "user_id", columnDefinition = "BIGINT")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
-    @JoinColumn(name = "dish_id")
-    private Dish dish;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "order_dish",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "dish_id")
+    )
+    private List<Dish> dishes;
 }

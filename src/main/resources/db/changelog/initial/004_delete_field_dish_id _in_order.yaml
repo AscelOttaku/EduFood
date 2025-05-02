@@ -1,0 +1,10 @@
+databaseChangeLog:
+  - changeSet:
+      id: 004_delete_field_dish_id _in_order.yaml
+      author: Zhanybekov Kanybek
+      changes:
+        - dropColumn:
+            columns:
+              - column:
+                  name: dish_id
+            tableName: order

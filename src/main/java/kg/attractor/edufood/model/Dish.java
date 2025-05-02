@@ -22,6 +22,7 @@ public class Dish implements Serializable {
 
     @Column(name = "name", nullable = false)
     private String name;
+
     @ManyToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;

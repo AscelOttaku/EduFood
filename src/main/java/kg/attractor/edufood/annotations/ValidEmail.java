@@ -2,7 +2,7 @@ package kg.attractor.edufood.annotations;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import kg.attractor.edufood.annotations.impl.EmailValidator;
+import kg.attractor.edufood.annotations.validator.EmailValidator;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

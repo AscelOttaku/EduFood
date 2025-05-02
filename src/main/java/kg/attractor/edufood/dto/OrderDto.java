@@ -1,9 +1,10 @@
 package kg.attractor.edufood.dto;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,6 +12,7 @@ import lombok.Setter;
 public class OrderDto {
     private Long id;
 
-    @NotNull
-    private Long dishId;
+    private UserDto user;
+
+    private List<DishDto> dishes;
 }

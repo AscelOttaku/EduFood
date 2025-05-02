@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 005_create_table_order_dish.yaml
+      author: Zhanybekov Kanybek
+      changes:
+        - createTable:
+            tableName: order_dish
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: order_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: dish_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: order_dish
+            baseColumnNames: order_id
+            referencedTableName: order
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            constraintName: fk_order_dish_order_id
+
+        - addForeignKeyConstraint:
+            baseTableName: order_dish
+            baseColumnNames: dish_id
+            referencedColumnNames: id
+            referencedTableName: dish
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            constraintName: fk_order_dish_dish_id
