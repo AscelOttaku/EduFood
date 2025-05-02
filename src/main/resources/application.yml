@@ -3,10 +3,6 @@ spring:
     name:
       EduFood
 
-  devtools:
-    restart:
-      enabled: true
-
   jpa:
     hibernate:
       ddl-auto: validate

@@ -26,7 +26,7 @@ public class DishServiceImpl implements DishService {
     private final PageHolderWrapper pageHolderWrapper;
 
     @Override
-    public DishDto findDishById(@NotNull @Positive Long dishId) {
+    public DishDto findDishById(Long dishId) {
         return dishRepository.findById(dishId)
                 .map(dishMapper::mapToDto)
                 .orElseThrow(() -> new NoSuchElementException("Dish does not exist by id " + dishId));
