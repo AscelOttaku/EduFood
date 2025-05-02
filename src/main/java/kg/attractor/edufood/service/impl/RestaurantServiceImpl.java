@@ -4,6 +4,7 @@ import kg.attractor.edufood.dto.RestaurantDto;
 import kg.attractor.edufood.mapper.RestaurantMapper;
 import kg.attractor.edufood.model.Restaurant;
 import kg.attractor.edufood.repository.RestaurantRepository;
+import kg.attractor.edufood.service.DishService;
 import kg.attractor.edufood.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     @Override
     public List<RestaurantDto> getAllRestaurants() {
         List<Restaurant> restaurants = restaurantRepository.findAll();
-        return restaurants.stream().map(restaurantMapper::mapToDto).toList();
+
+        return restaurants.stream().map(restaurantMapper::mapToDto)
+                .toList();
     }
 }
