@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -26,16 +27,17 @@ public class BucketController {
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page
     ) {
         DishDto dishDto = bucketService.addDish(dishService.findDishById(dishId));
-        return "redirect:/restaurants/" + dishDto.getRestaurantId() + "?page=" + page;
+        return "redirect:/restaurants/" + dishDto.getRestaurant().getId() + "?page=" + page;
     }
 
     @GetMapping
     public String getBucket(Model model) {
-        Map<RestaurantDto, DishDto> bucket = bucketService.getBucket();
+        Map<RestaurantDto, List<DishDto>> bucket = bucketService.getBucket();
         model.addAttribute("bucket", bucket);
         model.addAttribute(
                 "totalPrice", bucket.values().stream()
-                .mapToDouble(DishDto::getPrice)
+                .flatMapToDouble(dishDtos -> dishDtos.stream()
+                        .mapToDouble(DishDto::getPrice))
                 .sum()
         );
         model.addAttribute("quantity", bucketService.defineQuantity());

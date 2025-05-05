@@ -10,4 +10,6 @@ import org.springframework.stereotype.Repository;
 public interface DishRepository extends JpaRepository<Dish, Long> {
 
     Page<Dish> findDishByRestaurantId(Long restaurantId, Pageable pageable);
+
+    Page<Dish> findDishByRestaurantId(Long restaurantId);
 }

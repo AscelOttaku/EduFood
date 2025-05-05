@@ -32,7 +32,7 @@ public class BucketServiceImpl implements BucketService {
     @Transactional
     @Override
     public DishDto addDish(DishDto dish) {
-        restaurantService.findRestaurantById(dish.getRestaurantId());
+        restaurantService.findRestaurantById(dish.getRestaurant().getId());
 
         HttpSession session = getSession();
 
@@ -63,13 +63,20 @@ public class BucketServiceImpl implements BucketService {
 
 
     @Override
-    public Map<RestaurantDto, DishDto> getBucket() {
+    public Map<RestaurantDto, List<DishDto>> getBucket() {
         HttpSession session = getSession();
-        return getDishesFromSession(session.getAttribute("dishes"))
+        List<DishDto> dishDtos = getDishesFromSession(session.getAttribute("dishes"));
+
+        List<RestaurantDto> restaurantDtos = dishDtos
                 .stream()
+                .map(dishDto -> restaurantService.findRestaurantById(dishDto.getRestaurant().getId()))
+                .toList();
+
+        return restaurantDtos.stream()
                 .collect(Collectors.toMap(
-                        dish -> restaurantService.findRestaurantById(dish.getRestaurantId()),
-                        Function.identity()
+                        Function.identity(), restaurantDto -> dishDtos.stream()
+                                .filter(dishDto -> Objects.equals(dishDto.getRestaurant().getId(), restaurantDto.getId()))
+                                .toList()
                         )
                 );
     }

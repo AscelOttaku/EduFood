@@ -3,6 +3,7 @@ package kg.attractor.edufood.service.impl;
 import kg.attractor.edufood.dto.DishDto;
 import kg.attractor.edufood.dto.PageHolder;
 import kg.attractor.edufood.mapper.DishMapper;
+import kg.attractor.edufood.mapper.RestaurantMapper;
 import kg.attractor.edufood.mapper.impl.PageHolderWrapper;
 import kg.attractor.edufood.repository.DishRepository;
 import kg.attractor.edufood.service.DishService;
@@ -13,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -22,6 +24,7 @@ public class DishServiceImpl implements DishService {
     private final DishRepository dishRepository;
     private final DishMapper dishMapper;
     private final PageHolderWrapper pageHolderWrapper;
+    private final RestaurantMapper restaurantMapper;
 
     @Override
     public DishDto findDishById(Long dishId) {
@@ -41,5 +44,17 @@ public class DishServiceImpl implements DishService {
                 .map(dishMapper::mapToDto);
 
         return pageHolderWrapper.wrap(dishByRestaurant);
+    }
+
+    @Override
+    public List<DishDto> findDishByRestaurantId(Long restaurantId) {
+
+        if (restaurantId == null || restaurantId <= 0)
+            throw new IllegalArgumentException("Restaurant id must be greater than 0 and not equals null");
+
+        return dishRepository.findDishByRestaurantId(restaurantId)
+                .stream()
+                .map(dishMapper::mapToDto)
+                .toList();
     }
 }

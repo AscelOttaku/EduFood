@@ -13,7 +13,7 @@ public class HistoryDto {
     private Long id;
 
     @NotNull
-    private Long orderId;
+    private OrderDto orderId;
 
     private int amount;
 }
