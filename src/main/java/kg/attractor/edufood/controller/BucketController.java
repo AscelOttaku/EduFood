@@ -2,6 +2,7 @@ package kg.attractor.edufood.controller;
 
 import kg.attractor.edufood.dto.DishDto;
 import kg.attractor.edufood.dto.RestaurantDto;
+import kg.attractor.edufood.model.Dish;
 import kg.attractor.edufood.service.BucketService;
 import kg.attractor.edufood.service.DishService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -27,20 +29,17 @@ public class BucketController {
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page
     ) {
         DishDto dishDto = bucketService.addDish(dishService.findDishById(dishId));
-        return "redirect:/restaurants/" + dishDto.getRestaurant().getId() + "?page=" + page;
+        return "redirect:/dishes/restaurants/" + dishDto.getRestaurant().getId() + "?page=" + page;
     }
 
     @GetMapping
     public String getBucket(Model model) {
-        Map<RestaurantDto, List<DishDto>> bucket = bucketService.getBucket();
+        Map<DishDto, Integer> bucket = bucketService.getBucket();
         model.addAttribute("bucket", bucket);
         model.addAttribute(
-                "totalPrice", bucket.values().stream()
-                .flatMapToDouble(dishDtos -> dishDtos.stream()
-                        .mapToDouble(DishDto::getPrice))
-                .sum()
-        );
-        model.addAttribute("quantity", bucketService.defineQuantity());
+                "total", bucket.entrySet().stream()
+                        .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue())
+                .sum());
 
         log.info("buckets dishes {}", bucket.values());
 

@@ -15,5 +15,5 @@ public class OrderDto {
 
     private UserDto user;
 
-    private Map<RestaurantDto, List<DishDto>> restaurantDishes;
+    private Map<DishDto, Integer> restaurantDishes;
 }

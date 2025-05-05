@@ -20,13 +20,13 @@ public class HistoryMapper {
                 .build();
     }
 
-    public History mapToEntity(HistoryDto dto) {
-
-        History history = new History();
-        history.setId(dto.getId());
-        history.setOrder(orderMapper.mapToEntity(dto.getOrderId()));
-        history.setAmount(dto.getAmount());
-
-        return history;
-    }
+//    public History mapToEntity(HistoryDto dto) {
+//
+//        History history = new History();
+//        history.setId(dto.getId());
+//        history.setOrder(orderMapper.mapToEntity(dto.getOrderId()));
+//        history.setAmount(dto.getAmount());
+//
+//        return history;
+//    }
 }
