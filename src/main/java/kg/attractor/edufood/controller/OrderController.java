@@ -1,7 +1,5 @@
 package kg.attractor.edufood.controller;
 
-import jakarta.validation.Valid;
-import kg.attractor.edufood.dto.OrderDto;
 import kg.attractor.edufood.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,8 +15,8 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.SEE_OTHER)
-    public String saveOrder(@Valid @ModelAttribute("order") OrderDto order) {
-        orderService.saveOrder(order);
+    public String saveOrder() {
+        orderService.saveOrder();
         return "redirect:/orders/users";
     }
 

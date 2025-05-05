@@ -38,6 +38,7 @@ public class BucketController {
                 .mapToDouble(DishDto::getPrice)
                 .sum()
         );
+        model.addAttribute("quantity", bucketService.defineQuantity());
 
         log.info("buckets dishes {}", bucket.values());
 

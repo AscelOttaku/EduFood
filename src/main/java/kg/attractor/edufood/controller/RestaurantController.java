@@ -1,5 +1,6 @@
 package kg.attractor.edufood.controller;
 
+import kg.attractor.edufood.service.BucketService;
 import kg.attractor.edufood.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequiredArgsConstructor
 public class RestaurantController {
     private final RestaurantService restaurantService;
+    private final BucketService bucketService;
 
     @GetMapping
     public String restaurants(Model model) {
         model.addAttribute("restaurants", restaurantService.getAllRestaurants());
+        model.addAttribute("quantity", bucketService.defineQuantity());
         return "restaurants/restaurants";
     }
 

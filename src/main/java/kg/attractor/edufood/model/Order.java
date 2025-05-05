@@ -27,6 +27,14 @@ public class Order implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
+            name = "order_restaurants",
+            joinColumns = @JoinColumn(name = "order_id"),
+            inverseJoinColumns = @JoinColumn(name = "restaurant_id")
+    )
+    private List<Restaurant> restaurants;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
             name = "order_dish",
             joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "dish_id")

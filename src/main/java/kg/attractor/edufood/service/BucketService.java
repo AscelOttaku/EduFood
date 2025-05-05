@@ -11,4 +11,6 @@ public interface BucketService {
     Map<RestaurantDto, DishDto> getBucket();
 
     void clearDishes();
+
+    Integer defineQuantity();
 }

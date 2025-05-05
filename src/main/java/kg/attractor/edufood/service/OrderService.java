@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface OrderService {
     @Transactional
-    Long saveOrder(OrderDto orderDto);
+    Long saveOrder();
 
     List<OrderDto> findAllOrders(int page, int size);
 }

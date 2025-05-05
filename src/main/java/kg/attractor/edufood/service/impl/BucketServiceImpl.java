@@ -11,10 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -81,5 +78,14 @@ public class BucketServiceImpl implements BucketService {
     public void clearDishes() {
         HttpSession session = getSession();
         session.removeAttribute("dishes");
+    }
+
+    @Override
+    public Integer defineQuantity() {
+        var dishes = getDishesFromSession(getSession().getAttribute("dishes"));
+        return dishes.stream()
+                .map(DishDto::getId)
+                .collect(Collectors.toSet())
+                .size();
     }
 }

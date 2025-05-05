@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: 006_create_orders_restaurant_table
+      author: Kanybek
+      changes:
+        - createTable:
+            tableName: order_restaurants
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: restaurant_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+
+        - addForeignKeyConstraint:
+            baseTableName: order_restaurants
+            baseColumnNames: restaurant_id
+            referencedTableName: restaurant
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            constraintName: fk_restaurant_id_order
+
+        - addForeignKeyConstraint:
+            baseTableName: order_restaurants
+            baseColumnNames: order_id
+            referencedTableName: order
+            referencedColumnNames: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+            constraintName: fk_order_id_orders
