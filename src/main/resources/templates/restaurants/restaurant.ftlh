@@ -33,10 +33,10 @@
             </#if>
         </div>
 
-        <#if restaurant.dishes??>
+        <#if dishesPage??>
             <div class="dishes-container">
-                <#if restaurant.dishes.content?size gt 0>
-                    <#list restaurant.dishes.content as dish>
+                <#if dishesPage.content?size gt 0>
+                    <#list dishesPage.content as dish>
                         <div class="dish-item border-bottom pb-3 mb-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>

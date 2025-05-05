@@ -24,9 +24,8 @@ public class DishController {
             @RequestParam(value = "size", required = false, defaultValue = "10") int size,
             Model model
     ) {
-        model.addAttribute("selectedRestaurantId", restaurantId);
-        model.addAttribute("restaurants", restaurantService.getAllRestaurants());
+        model.addAttribute("restaurant", restaurantService.findRestaurantById(restaurantId));
         model.addAttribute("dishesPage", dishService.findDishByRestaurantId(restaurantId, page, size));
-        return "restaurants/restaurants";
+        return "restaurants/restaurant";
     }
 }

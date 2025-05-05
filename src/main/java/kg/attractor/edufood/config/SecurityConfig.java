@@ -28,6 +28,7 @@ public class SecurityConfig {
                         .loginPage("/auth/login")
                         .loginProcessingUrl("/auth/login")
                         .failureUrl("/auth/login?error=true")
+                        .defaultSuccessUrl("/restaurants")
                         .permitAll())
 
                 .logout(logout -> logout

@@ -35,7 +35,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         RestaurantDto restaurantDto = restaurantMapper.mapToDto(restaurantRepository.findById(restaurantId)
                 .orElseThrow(() -> new NoSuchElementException("Restaurant not found by id " + restaurantId)));
 
-        restaurantDto.setDishes(dishService.findDishByRestaurantId(restaurantDto.getId(), page, size));
+//        restaurantDto.setDishes(dishService.findDishByRestaurantId(restaurantDto.getId(), page, size));
         return restaurantDto;
     }
 
@@ -50,7 +50,7 @@ public class RestaurantServiceImpl implements RestaurantService {
         RestaurantDto restaurantDto = restaurantMapper.mapToDto(restaurantRepository.findRestaurantByNameContainingIgnoreCase(name)
                 .orElseThrow(() -> new NoSuchElementException("restaurant by name " + name + " not found")));
 
-        restaurantDto.setDishes(dishService.findDishByRestaurantId(restaurantDto.getId(), page, size));
+//        restaurantDto.setDishes(dishService.findDishByRestaurantId(restaurantDto.getId(), page, size));
         return restaurantDto;
     }
 }

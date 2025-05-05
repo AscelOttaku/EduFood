@@ -21,7 +21,7 @@ public class BucketController {
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page
     ) {
         DishDto dishDto = bucketService.addDish(dishService.findDishById(dishId));
-        return "redirect:/restaurants/" + dishDto.getRestaurantId() + "?page=" + page;
+        return "redirect:/restaurants/" + dishDto.getRestaurant().getId() + "?page=" + page;
     }
 
     @GetMapping

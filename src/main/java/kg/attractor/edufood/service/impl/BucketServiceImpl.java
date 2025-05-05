@@ -34,7 +34,7 @@ public class BucketServiceImpl implements BucketService {
     @Transactional
     @Override
     public DishDto addDish(DishDto dish) {
-        restaurantService.findRestaurantById(dish.getRestaurantId().getId());
+        restaurantService.findRestaurantById(dish.getRestaurant().getId());
 
         HttpSession session = getSession();
 
@@ -64,7 +64,7 @@ public class BucketServiceImpl implements BucketService {
         return getDishesFromSession(session.getAttribute("dishes"))
                 .stream()
                 .collect(Collectors.toMap(
-                        dish -> restaurantService.findRestaurantById(dish.getRestaurantId().getId()),
+                        dish -> restaurantService.findRestaurantById(dish.getRestaurant().getId()),
                         Function.identity()
                         )
                 );

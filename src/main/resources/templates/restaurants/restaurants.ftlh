@@ -33,11 +33,11 @@
 <div class="container mt-5">
     <h1 class="mb-4 mt-3">Restaurants</h1>
 
-    <#if restaurants?? && restaurants?size gt 0>
+    <#if restaurants??>
         <div class="restaurants-list">
             <#list restaurants as restaurant>
                 <div class="restaurant-item">
-                    <a href="/restaurants/${restaurant.id}" class="text-decoration-none text-dark">
+                    <a href="/dishes/restaurants/${restaurant.id}" class="text-decoration-none text-dark">
                         <div class="restaurant-header">
                             <span>${restaurant.name!''}</span>
                         </div>

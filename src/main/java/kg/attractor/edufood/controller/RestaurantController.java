@@ -1,5 +1,6 @@
 package kg.attractor.edufood.controller;
 
+import kg.attractor.edufood.dto.RestaurantDto;
 import kg.attractor.edufood.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("restaurants")
 @RequiredArgsConstructor
@@ -17,7 +20,8 @@ public class RestaurantController {
 
     @GetMapping
     public String restaurants(Model model) {
-        model.addAttribute("restaurants", restaurantService.getAllRestaurants());
+        List<RestaurantDto> restaurantDtoList = restaurantService.getAllRestaurants();
+        model.addAttribute("restaurants", restaurantDtoList);
         return "restaurants/restaurants";
     }
 
