@@ -2,23 +2,29 @@ package kg.attractor.edufood.service.impl;
 
 import jakarta.servlet.http.HttpSession;
 import kg.attractor.edufood.dto.DishDto;
-import kg.attractor.edufood.dto.RestaurantDto;
+import kg.attractor.edufood.service.AuthService;
 import kg.attractor.edufood.service.BucketService;
+import kg.attractor.edufood.service.DishService;
 import kg.attractor.edufood.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.*;
-import java.util.function.Function;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class BucketServiceImpl implements BucketService {
     private final RestaurantService restaurantService;
+    private final AuthService authService;
+    private final DishService dishService;
 
     private HttpSession getSession() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -36,63 +42,58 @@ public class BucketServiceImpl implements BucketService {
 
         HttpSession session = getSession();
 
-        Object object = session.getAttribute("dishes");
+        Object object = session.getAttribute(authService.getAuthUser().getEmail());
 
-        List<DishDto> dishes = getDishesFromSession(object);
-        dishes.add(dish);
+        Map<Long, Integer> order = getDishesFromSession(object);
+        Long dishId = dish.getId();
+        order.put(dishId, order.containsKey(dishId) ? order.get(dishId) + 1 : 1);
 
-        Double totalPrice = (Double) session.getAttribute("totalPrice");
+        String email = authService.getAuthUser().getEmail();
+        log.info("Session key: {}", email);
+        log.info("Attributes in session: {}", Collections.list(session.getAttributeNames()));
+
+
+        Double totalPrice = (Double) session.getAttribute("price");
         totalPrice = totalPrice != null ? totalPrice : 0.0;
-
         totalPrice += dish.getPrice();
-        session.setAttribute("dishes", dishes);
+
+        session.setAttribute(authService.getAuthUser().getEmail(), order);
         session.setAttribute("price", totalPrice);
         return dish;
     }
 
-    private static List<DishDto> getDishesFromSession(Object object) {
-        List<DishDto> dishes = new ArrayList<>();
+    private static Map<Long, Integer> getDishesFromSession(Object object) {
+        Map<Long, Integer> dishes = new HashMap<>();
 
-        if (object instanceof List<?> list)
-            dishes = list.stream()
-                    .filter(DishDto.class::isInstance)
-                    .map(DishDto.class::cast)
-                    .collect(Collectors.toList());
+        if (object instanceof Map<?, ?> list) {
+            for (Map.Entry<?, ?> entry : list.entrySet()) {
+                if (entry.getKey() instanceof Long dish && entry.getValue() instanceof Integer quantity) {
+                    dishes.put(dish, quantity);
+                }
+            }
+        }
+
         return dishes;
     }
 
 
     @Override
-    public Map<RestaurantDto, List<DishDto>> getBucket() {
+    public Map<DishDto, Integer> getBucket() {
         HttpSession session = getSession();
-        List<DishDto> dishDtos = getDishesFromSession(session.getAttribute("dishes"));
+        Map<Long, Integer> order = getDishesFromSession(session.getAttribute(authService.getAuthUser().getEmail()));
 
-        List<RestaurantDto> restaurantDtos = dishDtos
+        return order.entrySet()
                 .stream()
-                .map(dishDto -> restaurantService.findRestaurantById(dishDto.getRestaurant().getId()))
-                .toList();
-
-        return restaurantDtos.stream()
                 .collect(Collectors.toMap(
-                        Function.identity(), restaurantDto -> dishDtos.stream()
-                                .filter(dishDto -> Objects.equals(dishDto.getRestaurant().getId(), restaurantDto.getId()))
-                                .toList()
-                        )
-                );
+                        e ->dishService.findDishById(e.getKey()) ,
+                        Map.Entry::getValue
+                ));
     }
 
     @Override
     public void clearDishes() {
         HttpSession session = getSession();
-        session.removeAttribute("dishes");
+        session.removeAttribute(authService.getAuthUser().getEmail());
     }
 
-    @Override
-    public Integer defineQuantity() {
-        var dishes = getDishesFromSession(getSession().getAttribute("dishes"));
-        return dishes.stream()
-                .map(DishDto::getId)
-                .collect(Collectors.toSet())
-                .size();
-    }
 }

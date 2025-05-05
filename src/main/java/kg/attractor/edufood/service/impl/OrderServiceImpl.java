@@ -30,7 +30,7 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public Long saveOrder() {
-        Map<RestaurantDto, List<DishDto>> dishes = bucketService.getBucket();
+        Map<DishDto, Integer> dishes = bucketService.getBucket();
 
         OrderDto orderDto = OrderDto.builder()
                 .restaurantDishes(dishes)

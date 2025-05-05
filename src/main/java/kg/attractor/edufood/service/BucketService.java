@@ -9,9 +9,7 @@ import java.util.Map;
 public interface BucketService {
     DishDto addDish(DishDto dish);
 
-    Map<RestaurantDto, List<DishDto>> getBucket();
+    Map<DishDto, Integer> getBucket();
 
     void clearDishes();
-
-    Integer defineQuantity();
 }

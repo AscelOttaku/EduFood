@@ -13,26 +13,27 @@
 <div class="bucket-container">
     <h1 class="bucket-header">Корзина пользователя</h1>
 
-    <#if bucket?? && bucket?size gt 0>
+    <#if bucket??>
         <div class="bucket-items">
-            <#list bucket as restaurant, dish>
+            <#list bucket as dishDto, quantity>
                 <div class="bucket-item">
-                    <div class="restaurant-name">${restaurant.name}</div>
                     <div class="dish-row">
-                        <span class="dish-name">${dish.name}</span>
-                        <span class="dish-price">${dish.price} сом</span>
+                        <span class="dish-name">${dishDto.name!''}</span>
+                        <span class="dish-quantity">x${quantity}</span>
+                        <span class="dish-price">${dishDto.price!0} сом</span>
+                        <span class="dish-total">= ${dishDto.price * quantity} сом</span>
                     </div>
+                    <input type="hidden" name="dishIds" value="${dishDto.id!''}">
                 </div>
             </#list>
 
-            <div class="total-price">
+            <div class="total-price mt-3">
                 <span class="total-label">Общая сумма:</span>
-                <span class="total-value">${totalPrice} сом</span>
+                <span class="total-value">${total!0} сом</span>
             </div>
 
-            <form name="dishes" method="post" action="orders" class="checkout-section">
-                <input type="hidden" value="${bucket.values}">
-                <button class="btn btn-checkout">
+            <form name="dishes" method="post" action="orders" class="checkout-section mt-3">
+                <button type="submit" class="btn btn-checkout">
                     <i class="bi bi-cart-check"></i> Оформить заказ
                 </button>
             </form>
@@ -43,6 +44,8 @@
             <p class="text-muted">Добавьте блюда из ресторанов</p>
         </div>
     </#if>
+
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

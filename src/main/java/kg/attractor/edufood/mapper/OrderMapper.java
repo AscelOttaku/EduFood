@@ -26,47 +26,36 @@ public class OrderMapper {
     private final DishService dishService;
 
     public OrderDto mapToDto(Order order) {
-
-        List<RestaurantDto> restaurantDtos = order.getRestaurants().stream()
-                .map(restaurantMapper::mapToDto)
-                .toList();
-
-        Map<RestaurantDto, List<DishDto>> restaurantDishes = restaurantDtos
-                .stream()
+        Map<DishDto, Integer> orders = order.getDishes().stream()
+                .map(dishMapper::mapToDto)
                 .collect(Collectors.toMap(
                         Function.identity(),
-                        restaurantDto -> dishService.findDishByRestaurantId(restaurantDto.getId())
+                        dto -> 1,
+                        Integer::sum
                 ));
 
         return OrderDto.builder()
                 .id(order.getId())
                 .user(userMapper.mapToDto(order.getUser()))
-                .restaurantDishes(restaurantDishes)
+                .restaurantDishes(orders)
                 .build();
     }
 
     public Order mapToEntity(OrderDto dto) {
-
-        List<Restaurant> restaurantDtos = dto.getRestaurantDishes()
-                .keySet()
-                .stream()
-                .map(restaurantMapper::mapToEntity)
-                .toList();
-
-        List<Dish> dishes = dto.getRestaurantDishes()
-                .values()
-                .stream()
-                .flatMap(getDishes -> getDishes.stream()
-                        .map(dishMapper::mapToEntity))
+        List<Dish> dishes = dto.getRestaurantDishes().entrySet().stream()
+                .flatMap(entry -> {
+                    Dish dish = dishMapper.mapToEntity(entry.getKey());
+                    int quantity = entry.getValue();
+                    return java.util.stream.IntStream.range(0, quantity).mapToObj(i -> dish);
+                })
                 .toList();
 
         Order order = new Order();
         order.setId(dto.getId());
         order.setUser(userMapper.mapToEntity(dto.getUser()));
-
-        order.setRestaurants(restaurantDtos);
         order.setDishes(dishes);
 
         return order;
     }
+
 }
