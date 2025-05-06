@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         return "errors/error";
     }
 
-    @ExceptionHandler({NoSuchElementException.class, UsernameNotFoundException.class})
+    @ExceptionHandler({RuntimeException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String handleRunTimeException(
             Model model, RuntimeException ex, HttpServletRequest request

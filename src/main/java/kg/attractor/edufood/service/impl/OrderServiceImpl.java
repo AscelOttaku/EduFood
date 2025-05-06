@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
                 .sorted(Comparator.comparing(orderDto -> orderDto.getDishes().values()
                         .stream()
                         .reduce(Integer::sum)
-                        .orElseThrow(() -> new IllegalStateException("order cannot be performed without dishes"))))
+                        .orElse(0)))
                 .toList();
     }
 }

@@ -19,9 +19,6 @@
                 <h1 class="profile-title">
                     <i class="bi bi-person-badge me-2"></i>Профиль ${userDto.authority.name}
                 </h1>
-                <a href="/userDtos/update/profile" class="btn btn-outline-secondary">
-                    <i class="bi bi-pencil-square me-2"></i>Редактировать
-                </a>
             </div>
         </div>
 
