@@ -21,6 +21,11 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="/orders/users">
+                        <i class="bi bi-clock-history me-1"></i> Orders
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="/users/profile">
                         <i class="bi bi-clock-history me-1"></i> Профиль
                     </a>

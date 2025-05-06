@@ -34,6 +34,17 @@
                         <input type="hidden" name="dishId" value="${dishDto.id!''}">
                         <button type="submit" class="btn btn-sm btn-outline-danger">-</button>
                     </form>
+
+                    <form method="post" action="/buckets/${dishDto.id}">
+
+                        <#if _csrf??>
+                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                   value="${(_csrf.token)!'csrf-token'}"/>
+                        </#if>
+
+                        <input type="hidden" name="dishId" value="${dishDto.id!''}">
+                        <button type="submit" class="btn btn-sm btn-outline-success">+</button> <!-- зеленая кнопка -->
+                    </form>
                 </div>
             </#list>
 
@@ -43,6 +54,12 @@
             </div>
 
             <form name="dishes" method="post" action="orders" class="checkout-section mt-3">
+
+                <#if _csrf??>
+                    <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                           value="${(_csrf.token)!'csrf-token'}"/>
+                </#if>
+
                 <button type="submit" class="btn btn-checkout">
                     <i class="bi bi-cart-check"></i> Оформить заказ
                 </button>

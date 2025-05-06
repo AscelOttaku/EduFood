@@ -22,7 +22,7 @@ public class History implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY,  cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id")
-    private Order order;
+    private Orders orders;
 
     @Column(name = "amount")
     private int amount;

@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008_add_column_quantity_to_order_dish
+      author: Kanybek
+      changes:
+        - addColumn:
+            tableName: order_dish
+            columns:
+              - column:
+                  name: quantity
+                  type: int
+                  constraints:
+                    nullable: false

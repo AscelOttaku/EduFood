@@ -15,7 +15,7 @@ public class HistoryMapper {
 
         return HistoryDto.builder()
                 .id(history.getId())
-                .orderId(orderMapper.mapToDto(history.getOrder()))
+                .orderId(orderMapper.mapToDto(history.getOrders()))
                 .amount(history.getAmount())
                 .build();
     }

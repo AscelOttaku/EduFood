@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009_rename_table_order
+      author: Kanybek
+      changes:
+        - renameTable:
+            newTableName: orders
+            oldTableName: order
