@@ -35,7 +35,7 @@
 
     <#if restaurants??>
         <div class="restaurants-list">
-            <#list restaurants as restaurant>
+            <#list restaurants.content as restaurant>
                 <div class="restaurant-item">
                     <a href="/dishes/restaurants/${restaurant.id}" class="text-decoration-none text-dark">
                         <div class="restaurant-header">
@@ -47,6 +47,28 @@
         </div>
     <#else>
         <div class="alert alert-info">No restaurants found.</div>
+    </#if>
+
+    <#if restaurants.totalPages gt 1>
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <#if !restaurants.hasPreviousPage>disabled</#if>">
+                    <a class="page-link" href="/restaurants?page=${restaurants.page - 1}">
+                        &laquo; Назад
+                    </a>
+                </li>
+                <#list 1..restaurants.totalPages as pageNum>
+                    <li class="page-item <#if restaurants.page == pageNum - 1>active</#if>">
+                        <a class="page-link" href="/restaurants?page=${pageNum - 1}">${pageNum}</a>
+                    </li>
+                </#list>
+                <li class="page-item <#if !restaurants.hasNextPage>disabled</#if>">
+                    <a class="page-link" href="/restaurants?page=${restaurants.page + 1}">
+                        Вперед &raquo;
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </#if>
 </div>
 </body>

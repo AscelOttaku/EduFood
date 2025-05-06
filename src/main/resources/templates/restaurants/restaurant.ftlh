@@ -63,6 +63,33 @@
     <#else>
         <div class="alert alert-danger">Restaurant not found.</div>
     </#if>
+
+    <#if dishesPage.totalPages gt 1>
+        <#assign restaurantId = (dishesPage.content[0].restaurant.id)!>
+
+        <nav aria-label="Page navigation" class="mt-4">
+            <ul class="pagination justify-content-center">
+                <li class="page-item <#if !dishesPage.hasPreviousPage>disabled</#if>">
+                    <a class="page-link" href="/dishes/restaurants/${restaurantId}?page=${dishesPage.page - 1}">
+                        &laquo; Назад
+                    </a>
+                </li>
+
+                <#list 1..dishesPage.totalPages as pageNum>
+                    <li class="page-item <#if dishesPage.page == pageNum - 1>active</#if>">
+                        <a class="page-link" href="/dishes/restaurants/${restaurantId}?page=${pageNum - 1}">${pageNum}</a>
+                    </li>
+                </#list>
+
+                <li class="page-item <#if !dishesPage.hasNextPage>disabled</#if>">
+                    <a class="page-link" href="/dishes/restaurants/${restaurantId}?page=${dishesPage.page + 1}">
+                        Вперед &raquo;
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </#if>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

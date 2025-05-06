@@ -21,7 +21,7 @@ public class DishController {
     public String findDishByRestaurantId(
             @PathVariable Long restaurantId,
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-            @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(value = "size", required = false, defaultValue = "5") int size,
             Model model
     ) {
         model.addAttribute("restaurant", restaurantService.findRestaurantById(restaurantId));
