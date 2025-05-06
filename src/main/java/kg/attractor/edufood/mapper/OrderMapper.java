@@ -2,6 +2,7 @@ package kg.attractor.edufood.mapper;
 
 import kg.attractor.edufood.dto.DishDto;
 import kg.attractor.edufood.dto.OrderDto;
+import kg.attractor.edufood.model.OrderDish;
 import kg.attractor.edufood.model.Orders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,11 +19,9 @@ public class OrderMapper {
 
     public OrderDto mapToDto(Orders order) {
         Map<DishDto, Integer> orders = order.getOrderDishes().stream()
-                .map(orderDish -> dishMapper.mapToDto(orderDish.getDish()))
                 .collect(Collectors.toMap(
-                        Function.identity(),
-                        dto -> 1,
-                        Integer::sum
+                        orderDish -> dishMapper.mapToDto(orderDish.getDish()),
+                        OrderDish::getQuantity
                 ));
 
         return OrderDto.builder()
