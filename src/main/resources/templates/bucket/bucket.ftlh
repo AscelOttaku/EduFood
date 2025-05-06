@@ -19,7 +19,21 @@
                 <div class="bucket-item">
                     <div class="dish-row">
                         <span class="dish-name">${dishDto.name!''}</span>
+                        <form action="/buckets/add/${dishDto.id}" method="post" style="display:inline;">
+                            <#if _csrf??>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                            </#if>
+                            <button type="submit" class="btn btn-sm btn-success">+</button>
+                        </form>
                         <span class="dish-quantity">x${quantity}</span>
+
+                        <form action="/buckets/remove/${dishDto.id}" method="post" style="display:inline;">
+                            <#if _csrf??>
+                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+                            </#if>
+                            <button type="submit" class="btn btn-sm btn-danger">-</button>
+                        </form>
+
                         <span class="dish-price">${dishDto.price!0} сом</span>
                         <span class="dish-total">= ${dishDto.price * quantity} сом</span>
                     </div>

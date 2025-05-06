@@ -10,11 +10,14 @@ import kg.attractor.edufood.service.DishService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -42,13 +45,14 @@ public class OrderMapper {
     }
 
     public Order mapToEntity(OrderDto dto) {
-        List<Dish> dishes = dto.getRestaurantDishes().entrySet().stream()
-                .flatMap(entry -> {
-                    Dish dish = dishMapper.mapToEntity(entry.getKey());
-                    int quantity = entry.getValue();
-                    return java.util.stream.IntStream.range(0, quantity).mapToObj(i -> dish);
-                })
-                .toList();
+        List<Dish> dishes=new ArrayList<>();
+        for (Map.Entry<DishDto, Integer> entry : dto.getRestaurantDishes().entrySet()) {
+            Dish dish = dishMapper.mapToEntity(entry.getKey());
+            int quantity = entry.getValue();
+            for (int i = 0; i < quantity; i++) {
+                dishes.add(dish);
+            }
+        }
 
         Order order = new Order();
         order.setId(dto.getId());
@@ -57,5 +61,7 @@ public class OrderMapper {
 
         return order;
     }
+
+
 
 }

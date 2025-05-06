@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -30,4 +31,18 @@ public class DishDto implements Serializable {
     @NotNull
     @Positive
     private int price;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DishDto dishDto = (DishDto) o;
+        return Objects.equals(id, dishDto.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
 }

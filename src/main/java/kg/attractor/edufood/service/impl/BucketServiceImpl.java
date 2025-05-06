@@ -3,6 +3,9 @@ package kg.attractor.edufood.service.impl;
 import jakarta.servlet.http.HttpSession;
 import kg.attractor.edufood.dto.DishDto;
 import kg.attractor.edufood.dto.RestaurantDto;
+import kg.attractor.edufood.mapper.DishMapper;
+import kg.attractor.edufood.model.Dish;
+import kg.attractor.edufood.repository.DishRepository;
 import kg.attractor.edufood.service.AuthService;
 import kg.attractor.edufood.service.BucketService;
 import kg.attractor.edufood.service.DishService;
@@ -23,6 +26,8 @@ public class BucketServiceImpl implements BucketService {
     private final RestaurantService restaurantService;
     private final AuthService authService;
     private final DishService dishService;
+    private final DishRepository dishRepository;
+    private final DishMapper dishMapper;
 
     private HttpSession getSession() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -46,17 +51,9 @@ public class BucketServiceImpl implements BucketService {
         Long dishId = dish.getId();
         order.put(dishId, order.containsKey(dishId) ? order.get(dishId) + 1 : 1);
 
-        String email = authService.getAuthUser().getEmail();
-        System.out.println("Session key: " + email);
-        System.out.println("Attributes in session: " + Collections.list(session.getAttributeNames()));
-
-
-        Double totalPrice = (Double) session.getAttribute("price");
-        totalPrice = totalPrice != null ? totalPrice : 0.0;
-        totalPrice += dish.getPrice();
 
         session.setAttribute(authService.getAuthUser().getEmail(), order);
-        session.setAttribute("price", totalPrice);
+
         return dish;
     }
 
@@ -93,5 +90,36 @@ public class BucketServiceImpl implements BucketService {
         HttpSession session = getSession();
         session.removeAttribute(authService.getAuthUser().getEmail());
     }
+
+    @Override
+    public DishDto removeDish(Long dishId) {
+        Dish dish = dishRepository.findById(dishId).orElse(null);
+
+        HttpSession session = getSession();
+
+        Object object = session.getAttribute(authService.getAuthUser().getEmail());
+
+        Map<Long, Integer> order = getDishesFromSession(object);
+
+        order.put(dishId, order.containsKey(dishId) ? order.get(dishId) - 1 : 0);
+
+        session.setAttribute(authService.getAuthUser().getEmail(), order);
+
+
+        return dishMapper.mapToDto(dish);
+    }
+
+    @Override
+    public void setSession(Map<DishDto, Integer> session) {
+        Map<Long, Integer> dishIds = session.entrySet().stream()
+                .collect(Collectors.toMap(
+                        entry -> entry.getKey().getId(),
+                        Map.Entry::getValue
+                ));
+
+        HttpSession httpSession = getSession();
+        httpSession.setAttribute(authService.getAuthUser().getEmail(), dishIds);
+    }
+
 
 }

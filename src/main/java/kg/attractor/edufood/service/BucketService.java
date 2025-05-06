@@ -12,4 +12,10 @@ public interface BucketService {
     Map<DishDto, Integer> getBucket();
 
     void clearDishes();
+
+    DishDto removeDish(Long dishId);
+
+     void setSession( Map<DishDto, Integer> session);
+
+
 }
