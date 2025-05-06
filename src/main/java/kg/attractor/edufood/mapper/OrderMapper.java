@@ -3,9 +3,6 @@ package kg.attractor.edufood.mapper;
 import kg.attractor.edufood.dto.DishDto;
 import kg.attractor.edufood.dto.OrderDto;
 import kg.attractor.edufood.model.Orders;
-import kg.attractor.edufood.model.OrderDish;
-import kg.attractor.edufood.repository.OrderDishRepository;
-import kg.attractor.edufood.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

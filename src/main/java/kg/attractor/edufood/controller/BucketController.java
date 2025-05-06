@@ -1,7 +1,9 @@
 package kg.attractor.edufood.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import kg.attractor.edufood.dto.BucketDishesDto;
 import kg.attractor.edufood.dto.DishDto;
+import kg.attractor.edufood.dto.PageHolder;
 import kg.attractor.edufood.service.BucketService;
 import kg.attractor.edufood.service.DishService;
 import lombok.RequiredArgsConstructor;
@@ -40,7 +42,25 @@ public class BucketController {
                         .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue())
                 .sum());
 
-        log.info("buckets dishes {}", bucket.values());
+        return "bucket/bucket";
+    }
+
+    @GetMapping("pagination")
+    public String getBucket(
+      @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+      @RequestParam(value = "size", required = false, defaultValue = "5") Integer size,
+        Model model)
+    {
+        PageHolder<BucketDishesDto> bucketPage = bucketService.getBucketWithPagination(page, size);
+        model.addAttribute("bucketPage", bucketPage);
+
+        Map<DishDto, Integer> bucket = bucketService.getBucket();
+
+        double total = bucket.entrySet().stream()
+                .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue())
+                .sum();
+
+        model.addAttribute("total", total);
 
         return "bucket/bucket";
     }
@@ -49,6 +69,40 @@ public class BucketController {
     @ResponseStatus(HttpStatus.SEE_OTHER)
     public String deleteDishByDishId(@PathVariable Long dishId, Model model) {
         bucketService.removeDishById(dishId);
+
+        return "redirect:/buckets";
+    }
+
+    @PostMapping("remove/{dishId}")
+    public String removeDish(
+            @PathVariable Long dishId,
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+            Model model
+    ) {
+
+        Map<DishDto, Integer> bucket = bucketService.getBucket();
+
+        DishDto keyToRemove=null;
+        for (DishDto key : bucket.keySet()) {
+            if (key.getId().equals(dishId)) {
+                keyToRemove = key;
+                break;
+            }
+        }
+
+        Integer quantity = bucket.get(keyToRemove);
+        if (quantity <= 1) {
+                bucket.remove(keyToRemove);
+        } else {
+                bucket.put(keyToRemove, quantity - 1);
+        }
+
+        model.addAttribute("bucket", bucket);
+        model.addAttribute("total", bucket.entrySet().stream()
+                .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue())
+                .sum());
+
+        bucketService.setSession(bucket);
 
         return "redirect:/buckets";
     }
