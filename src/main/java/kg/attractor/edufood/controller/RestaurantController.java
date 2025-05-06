@@ -17,8 +17,11 @@ public class RestaurantController {
     private final RestaurantService restaurantService;
 
     @GetMapping
-    public String restaurants(Model model) {
-        model.addAttribute("restaurants", restaurantService.getAllRestaurants());
+    public String restaurants(
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(value = "size", required = false, defaultValue = "5") int size,
+            Model model) {
+        model.addAttribute("restaurants", restaurantService.getAllRestaurants(page,size));
         return "restaurants/restaurants";
     }
 
@@ -40,7 +43,7 @@ public class RestaurantController {
     public String findRestaurantById(
             @PathVariable Long restaurantId,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
-            @RequestParam(value = "size", required = false, defaultValue = "10") Integer size,
+            @RequestParam(value = "size", required = false, defaultValue = "5") Integer size,
             Model model
     ) {
         model.addAttribute(
