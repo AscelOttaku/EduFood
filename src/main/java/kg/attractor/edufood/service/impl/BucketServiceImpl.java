@@ -1,8 +1,10 @@
 package kg.attractor.edufood.service.impl;
 
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.servlet.http.HttpSession;
+import kg.attractor.edufood.dto.BucketDishesDto;
 import kg.attractor.edufood.dto.DishDto;
-import kg.attractor.edufood.dto.RestaurantDto;
+import kg.attractor.edufood.dto.PageHolder;
 import kg.attractor.edufood.mapper.DishMapper;
 import kg.attractor.edufood.model.Dish;
 import kg.attractor.edufood.repository.DishRepository;
@@ -17,7 +19,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,16 +74,28 @@ public class BucketServiceImpl implements BucketService {
 
 
     @Override
-    public Map<DishDto, Integer> getBucket() {
+    public PageHolder<BucketDishesDto> getBucketWithPagination(int page, int size) {
         HttpSession session = getSession();
         Map<Long, Integer> order = getDishesFromSession(session.getAttribute(authService.getAuthUser().getEmail()));
 
-        return order.entrySet()
-                .stream()
-                .collect(Collectors.toMap(
-                        e ->dishService.findDishById(e.getKey()) ,
-                        Map.Entry::getValue
-                ));
+        List<BucketDishesDto> bucketItems = order.entrySet().stream()
+                .map(e -> new BucketDishesDto(dishService.findDishById(e.getKey()), e.getValue()))
+                .toList();
+
+        int fromIndex = Math.min(page * size, bucketItems.size());
+        int toIndex = Math.min(fromIndex + size, bucketItems.size());
+        List<BucketDishesDto> paged = bucketItems.subList(fromIndex, toIndex);
+
+        int totalPages = (int) Math.ceil((double) bucketItems.size() / size);
+
+        return PageHolder.<BucketDishesDto>builder()
+                .content(paged)
+                .page(page)
+                .size(size)
+                .totalPages(totalPages)
+                .hasNextPage(page + 1 < totalPages)
+                .hasPreviousPage(page > 0)
+                .build();
     }
 
     @Override
@@ -119,6 +132,19 @@ public class BucketServiceImpl implements BucketService {
 
         HttpSession httpSession = getSession();
         httpSession.setAttribute(authService.getAuthUser().getEmail(), dishIds);
+    }
+
+    @Override
+    public Map<DishDto, Integer> getBucket() {
+        HttpSession session = getSession();
+        Map<Long, Integer> order = getDishesFromSession(session.getAttribute(authService.getAuthUser().getEmail()));
+
+                return order.entrySet()
+                        .stream()
+                        .collect(Collectors.toMap(
+                        e ->dishService.findDishById(e.getKey()) ,
+                        Map.Entry::getValue));
+
     }
 
 

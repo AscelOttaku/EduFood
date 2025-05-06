@@ -1,15 +1,15 @@
 package kg.attractor.edufood.service;
 
+import kg.attractor.edufood.dto.BucketDishesDto;
 import kg.attractor.edufood.dto.DishDto;
-import kg.attractor.edufood.dto.RestaurantDto;
+import kg.attractor.edufood.dto.PageHolder;
 
-import java.util.List;
 import java.util.Map;
 
 public interface BucketService {
     DishDto addDish(DishDto dish);
 
-    Map<DishDto, Integer> getBucket();
+    PageHolder<BucketDishesDto> getBucketWithPagination(int page, int size);
 
     void clearDishes();
 
@@ -18,4 +18,5 @@ public interface BucketService {
      void setSession( Map<DishDto, Integer> session);
 
 
+    Map<DishDto, Integer> getBucket();
 }

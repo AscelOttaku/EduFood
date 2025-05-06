@@ -1,9 +1,8 @@
 package kg.attractor.edufood.controller;
 
-import jakarta.servlet.http.HttpSession;
+import kg.attractor.edufood.dto.BucketDishesDto;
 import kg.attractor.edufood.dto.DishDto;
-import kg.attractor.edufood.dto.RestaurantDto;
-import kg.attractor.edufood.model.Dish;
+import kg.attractor.edufood.dto.PageHolder;
 import kg.attractor.edufood.service.BucketService;
 import kg.attractor.edufood.service.DishService;
 import lombok.RequiredArgsConstructor;
@@ -12,9 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -32,6 +29,7 @@ public class BucketController {
         DishDto dishDto = bucketService.addDish(dishService.findDishById(dishId));
         return "redirect:/dishes/restaurants/" + dishDto.getRestaurant().getId() + "?page=" + page;
     }
+
     @PostMapping("add/{dishId}")
     public String addDishToBucket(@PathVariable Long dishId, Model model) {
         DishDto dish = dishService.findDishById( dishId);
@@ -53,15 +51,22 @@ public class BucketController {
 
 
     @GetMapping
-    public String getBucket(Model model) {
-        Map<DishDto, Integer> bucket = bucketService.getBucket();
-        model.addAttribute("bucket", bucket);
-        model.addAttribute(
-                "total", bucket.entrySet().stream()
-                        .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue())
-                .sum());
+    public String getBucket(
+      @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+      @RequestParam(value = "size", required = false, defaultValue = "5") Integer size,
+        Model model)
+    {
+        PageHolder<BucketDishesDto> bucketPage = bucketService.getBucketWithPagination(page, size);
+        model.addAttribute("bucketPage", bucketPage);
 
-        log.info("buckets dishes {}", bucket.values());
+        Map<DishDto, Integer> bucket = bucketService.getBucket();
+
+        double total = bucket.entrySet().stream()
+                .mapToDouble(entry -> entry.getKey().getPrice() * entry.getValue())
+                .sum();
+
+        model.addAttribute("total", total);
+
 
         return "bucket/bucket";
     }
