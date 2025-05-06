@@ -17,10 +17,10 @@ public interface BucketService {
     void clearBucket();
 
     String redirectToUrl(HttpServletRequest request, DishDto dishDto, Integer page);
+
     DishDto removeDish(Long dishId);
 
      void setSession( Map<DishDto, Integer> session);
-
 
     Map<DishDto, Integer> getBucket();
 }
