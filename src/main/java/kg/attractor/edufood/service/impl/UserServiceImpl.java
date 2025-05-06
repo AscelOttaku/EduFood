@@ -1,6 +1,5 @@
 package kg.attractor.edufood.service.impl;
 
-import kg.attractor.edufood.dto.AuthorityDto;
 import kg.attractor.edufood.dto.UserDto;
 import kg.attractor.edufood.mapper.UserMapper;
 import kg.attractor.edufood.model.User;

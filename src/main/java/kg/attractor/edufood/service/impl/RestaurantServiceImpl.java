@@ -9,7 +9,6 @@ import kg.attractor.edufood.mapper.RestaurantMapper;
 import kg.attractor.edufood.mapper.impl.PageHolderWrapper;
 import kg.attractor.edufood.model.Restaurant;
 import kg.attractor.edufood.repository.RestaurantRepository;
-import kg.attractor.edufood.service.DishService;
 import kg.attractor.edufood.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
@@ -34,7 +32,6 @@ public class RestaurantServiceImpl implements RestaurantService {
         Page<Restaurant> restaurantsPage = restaurantRepository.findAll(pageable);
 
         Page<RestaurantDto> dtoPage = restaurantsPage.map(restaurantMapper::mapToDto);
-
         return pageHolderWrapper.wrap(dtoPage);
     }
 
@@ -54,10 +51,12 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public RestaurantDto findRestaurantByName(@NotBlank String name, int page, int size) {
-        RestaurantDto restaurantDto = restaurantMapper.mapToDto(restaurantRepository.findRestaurantByNameContainingIgnoreCase(name)
-                .orElseThrow(() -> new NoSuchElementException("restaurant by name " + name + " not found")));
+    public PageHolder<RestaurantDto> findRestaurantByName(@NotBlank String name, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
 
-        return restaurantDto;
+        Page<Restaurant> restaurants = restaurantRepository.findRestaurantByNameContainingIgnoreCase(name, pageable);
+
+        Page<RestaurantDto> dtoPage = restaurants.map(restaurantMapper::mapToDto);
+        return pageHolderWrapper.wrap(dtoPage);
     }
 }

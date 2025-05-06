@@ -6,8 +6,6 @@ import jakarta.validation.constraints.Positive;
 import kg.attractor.edufood.dto.PageHolder;
 import kg.attractor.edufood.dto.RestaurantDto;
 
-import java.util.List;
-
 public interface RestaurantService {
     PageHolder<RestaurantDto> getAllRestaurants(int page, int size);
 
@@ -15,5 +13,5 @@ public interface RestaurantService {
 
     RestaurantDto findRestaurantById(@NotNull @Positive Long restaurantId);
 
-    RestaurantDto findRestaurantByName(@NotBlank String name, int page, int size);
+    PageHolder<RestaurantDto> findRestaurantByName(@NotBlank String name, int page, int size);
 }

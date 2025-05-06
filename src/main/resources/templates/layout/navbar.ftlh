@@ -33,9 +33,9 @@
             </ul>
 
             <div class="d-flex">
-                <form class="d-flex me-3" action="#" method="get">
+                <form class="d-flex me-3" action="/restaurants/name" method="get">
                     <div class="input-group">
-                        <input class="form-control" type="search" name="query" placeholder="Поиск..."
+                        <input class="form-control" type="search" name="restaurantName" placeholder="Поиск..."
                                aria-label="Search">
                         <button class="btn btn-outline-light" type="submit">
                             <i class="bi bi-search"></i>
