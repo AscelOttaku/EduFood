@@ -43,7 +43,7 @@ public class BucketController {
         return "bucket/bucket";
     }
 
-    @DeleteMapping("{dishId}")
+    @PostMapping("delete/{dishId}")
     @ResponseStatus(HttpStatus.SEE_OTHER)
     public String deleteDishByDishId(@PathVariable Long dishId, Model model) {
         bucketService.removeDishById(dishId);

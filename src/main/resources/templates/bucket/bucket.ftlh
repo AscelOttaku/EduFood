@@ -24,8 +24,14 @@
                         <span class="dish-total">= ${dishDto.price * quantity} сом</span>
                     </div>
 
-                    <form method="post" action="/bucket/${dishDto.id}" style="display:inline;">
-                        <input type="hidden" name="_method" value="delete">
+                    <form method="post" action="/buckets/delete/${dishDto.id}">
+
+                        <#if _csrf??>
+                            <input type="hidden" name="${(_csrf.parameterName)!'csrf-param-name'}"
+                                   value="${(_csrf.token)!'csrf-token'}"/>
+                        </#if>
+
+                        <input type="hidden" name="dishId" value="${dishDto.id!''}">
                         <button type="submit" class="btn btn-sm btn-outline-danger">-</button>
                     </form>
                 </div>

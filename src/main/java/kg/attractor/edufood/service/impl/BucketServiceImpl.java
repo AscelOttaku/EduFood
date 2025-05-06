@@ -8,6 +8,7 @@ import kg.attractor.edufood.service.DishService;
 import kg.attractor.edufood.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springdoc.core.service.SecurityService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -25,6 +26,7 @@ public class BucketServiceImpl implements BucketService {
     private final RestaurantService restaurantService;
     private final AuthService authService;
     private final DishService dishService;
+    private final SecurityService securityService;
 
     private HttpSession getSession() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -93,9 +95,12 @@ public class BucketServiceImpl implements BucketService {
         Map<Long, Integer> dishes = getDishesFromSession(getSession().getAttribute("userBucket"));
 
         dishes.computeIfPresent(dishId, (k, v) -> {
-            if (v >= 0) return null;
-            else return --v;
+            if (v > 0) return --v;
+            else return null;
         });
+
+        HttpSession httpSession = getSession();
+        httpSession.setAttribute("userBucket", dishes);
     }
 
     @Override
