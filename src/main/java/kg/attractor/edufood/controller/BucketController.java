@@ -67,7 +67,7 @@ public class BucketController {
 
     @PostMapping("delete/{dishId}")
     @ResponseStatus(HttpStatus.SEE_OTHER)
-    public String deleteDishByDishId(@PathVariable Long dishId, Model model) {
+    public String deleteDishByDishId(@PathVariable Long dishId) {
         bucketService.removeDishById(dishId);
 
         return "redirect:/buckets";

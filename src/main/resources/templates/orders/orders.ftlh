@@ -16,16 +16,17 @@
 <div class="container pt-4">
     <h1>All Orders</h1>
 
-    <#list orders as order>
-        <hr>
-        <h2>Order #${order.id}</h2>
+    <#if orders?? && orders?size gt 0>
+        <#list orders as order>
+            <hr>
+            <h2>Order #${order.id}</h2>
 
-        <h3>User Information</h3>
-        <ul>
-            <li><strong>Username:</strong> ${order.user.name}</li>
-            <li><strong>Email:</strong> ${order.user.email}</li>
-        </ul>
-        <#assign orderTotal = 0>
+            <h3>User Information</h3>
+            <ul>
+                <li><strong>Username:</strong> ${order.user.name}</li>
+                <li><strong>Email:</strong> ${order.user.email}</li>
+            </ul>
+            <#assign orderTotal = 0>
 
         <h3>Order Details</h3>
         <table>
@@ -54,6 +55,9 @@
         </table>
             <h4>Total for Order: <strong>$${orderTotal}</strong></h4>
     </#list>
+    <#else>
+        <h2>User doesn't have any orders</h2>
+    </#if>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
