@@ -1,5 +1,6 @@
 package kg.attractor.edufood.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import kg.attractor.edufood.dto.DishDto;
 import kg.attractor.edufood.service.BucketService;
 import kg.attractor.edufood.service.DishService;
@@ -23,10 +24,11 @@ public class BucketController {
     @PostMapping("{dishId}")
     public String addBucket(
             @PathVariable Long dishId,
-            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+            HttpServletRequest request
     ) {
         DishDto dishDto = bucketService.addDish(dishService.findDishById(dishId));
-        return "redirect:/dishes/restaurants/" + dishDto.getRestaurant().getId() + "?page=" + page;
+        return bucketService.redirectToUrl(request, dishDto, page);
     }
 
     @GetMapping

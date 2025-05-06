@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -15,5 +14,5 @@ public class OrderDto {
 
     private UserDto user;
 
-    private Map<DishDto, Integer> restaurantDishes;
+    private Map<DishDto, Integer> dishes;
 }

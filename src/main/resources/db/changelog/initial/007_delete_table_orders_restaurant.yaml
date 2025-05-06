@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 008_delete_table_orders_restaurant
+      author: Kanybek
+      changes:
+        - dropTable:
+            tableName: order_restaurants
+            schemaName: public

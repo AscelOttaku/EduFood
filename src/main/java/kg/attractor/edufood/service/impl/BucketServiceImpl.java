@@ -1,5 +1,6 @@
 package kg.attractor.edufood.service.impl;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import kg.attractor.edufood.dto.DishDto;
 import kg.attractor.edufood.service.AuthService;
@@ -8,7 +9,6 @@ import kg.attractor.edufood.service.DishService;
 import kg.attractor.edufood.service.RestaurantService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.service.SecurityService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
@@ -16,6 +16,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,6 @@ public class BucketServiceImpl implements BucketService {
     private final RestaurantService restaurantService;
     private final AuthService authService;
     private final DishService dishService;
-    private final SecurityService securityService;
 
     private HttpSession getSession() {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
@@ -81,9 +81,12 @@ public class BucketServiceImpl implements BucketService {
 
         return order.entrySet()
                 .stream()
+                .sorted(Map.Entry.<Long, Integer>comparingByValue().reversed())
                 .collect(Collectors.toMap(
                         e -> dishService.findDishById(e.getKey()),
-                        Map.Entry::getValue
+                        Map.Entry::getValue,
+                        (k, v) -> v,
+                        LinkedHashMap::new
                 ));
     }
 
@@ -95,7 +98,7 @@ public class BucketServiceImpl implements BucketService {
         Map<Long, Integer> dishes = getDishesFromSession(getSession().getAttribute("userBucket"));
 
         dishes.computeIfPresent(dishId, (k, v) -> {
-            if (v > 0) return --v;
+            if (v > 1) return --v;
             else return null;
         });
 
@@ -104,8 +107,17 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public void clearDishes() {
+    public void clearBucket() {
         HttpSession session = getSession();
-        session.removeAttribute(authService.getAuthUser().getEmail());
+        session.removeAttribute("userBucket");
+    }
+
+    @Override
+    public String redirectToUrl(HttpServletRequest request, DishDto dishDto, Integer page) {
+        String refer = request.getHeader("Referer");
+
+        if (refer.contains("restaurants"))
+            return "redirect:/dishes/restaurants/" + dishDto.getRestaurant().getId() + "?page=" + page;
+        else return "redirect:/buckets";
     }
 }

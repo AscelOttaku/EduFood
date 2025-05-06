@@ -1,12 +1,9 @@
 package kg.attractor.edufood.mapper;
 
-import kg.attractor.edufood.dto.AuthorityDto;
 import kg.attractor.edufood.dto.UserDto;
-import kg.attractor.edufood.model.Authority;
 import kg.attractor.edufood.model.User;
 import kg.attractor.edufood.service.AuthorityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +18,7 @@ public class UserMapper {
     public UserDto mapToDto(User user) {
 
         return UserDto.builder()
+                .id(user.getId())
                 .email(user.getEmail())
                 .name(user.getName())
                 .password(user.getPassword())

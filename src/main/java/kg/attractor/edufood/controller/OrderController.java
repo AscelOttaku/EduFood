@@ -1,5 +1,6 @@
 package kg.attractor.edufood.controller;
 
+import kg.attractor.edufood.service.BucketService;
 import kg.attractor.edufood.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -12,11 +13,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
+    private final BucketService bucketService;
 
     @PostMapping
     @ResponseStatus(HttpStatus.SEE_OTHER)
     public String saveOrder() {
         orderService.saveOrder();
+        bucketService.clearBucket();
         return "redirect:/orders/users";
     }
 
