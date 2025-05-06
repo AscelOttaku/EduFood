@@ -26,31 +26,35 @@
                 <li><strong>Username:</strong> ${order.user.name}</li>
                 <li><strong>Email:</strong> ${order.user.email}</li>
             </ul>
+            <#assign orderTotal = 0>
 
-            <h3>Order Details</h3>
-            <table>
-                <thead>
+        <h3>Order Details</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Dish Name</th>
+                <th>Restaurant</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+            </tr>
+            </thead>
+            <tbody>
+            <#list order.dishes as dish, quantity>
+                <#assign orderTotal += dish.price * quantity>
                 <tr>
-                    <th>Dish Name</th>
-                    <th>Restaurant</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
+                    <td>${dish.name}</td>
+                    <td>${dish.restaurant.name}</td>
+                    <td>$${dish.price?string["0.00"]}</td>
+                    <td>${quantity}</td>
+                    <td>$${(dish.price * quantity)?string["0.00"]}</td>
                 </tr>
-                </thead>
-                <tbody>
-                <#list order.dishes as dish, quantity>
-                    <tr>
-                        <td>${dish.name}</td>
-                        <td>${dish.restaurant.name}</td>
-                        <td>$${dish.price?string["0.00"]}</td>
-                        <td>${quantity}</td>
-                        <td>$${(dish.price * quantity)?string["0.00"]}</td>
-                    </tr>
-                </#list>
-                </tbody>
-            </table>
-        </#list>
+            </#list>
+
+            </tbody>
+        </table>
+            <h4>Total for Order: <strong>$${orderTotal}</strong></h4>
+    </#list>
     <#else>
         <h2>User doesn't have any orders</h2>
     </#if>

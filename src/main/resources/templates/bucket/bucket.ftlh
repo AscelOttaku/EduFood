@@ -20,8 +20,8 @@
                     <div class="dish-row">
                         <span class="dish-name">${dishDto.name!''}</span>
                         <span class="dish-quantity">x${quantity}</span>
-                        <span class="dish-price">${dishDto.price!0} сом</span>
-                        <span class="dish-total">= ${dishDto.price * quantity} сом</span>
+                        <span class="dish-price">$${dishDto.price!0} </span>
+                        <span class="dish-total">= $${dishDto.price * quantity} </span>
                     </div>
 
                     <form method="post" action="/buckets/delete/${dishDto.id}">
@@ -43,14 +43,14 @@
                         </#if>
 
                         <input type="hidden" name="dishId" value="${dishDto.id!''}">
-                        <button type="submit" class="btn btn-sm btn-outline-success">+</button> <!-- зеленая кнопка -->
+                        <button type="submit" class="btn btn-sm btn-outline-success">+</button>
                     </form>
                 </div>
             </#list>
 
             <div class="total-price mt-3">
                 <span class="total-label">Общая сумма:</span>
-                <span class="total-value">${total!0} сом</span>
+                <span class="total-value">$${total!0}</span>
             </div>
 
             <form name="dishes" method="post" action="orders" class="checkout-section mt-3">
