@@ -1,19 +1,16 @@
 package kg.attractor.edufood.controller;
 
 import kg.attractor.edufood.dto.DishDto;
-import kg.attractor.edufood.dto.RestaurantDto;
-import kg.attractor.edufood.model.Dish;
 import kg.attractor.edufood.service.BucketService;
 import kg.attractor.edufood.service.DishService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -44,5 +41,13 @@ public class BucketController {
         log.info("buckets dishes {}", bucket.values());
 
         return "bucket/bucket";
+    }
+
+    @DeleteMapping("{dishId}")
+    @ResponseStatus(HttpStatus.SEE_OTHER)
+    public String deleteDishByDishId(@PathVariable Long dishId, Model model) {
+        bucketService.removeDishById(dishId);
+
+        return "redirect:/buckets";
     }
 }

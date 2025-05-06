@@ -10,10 +10,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Assert;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,22 +42,17 @@ public class BucketServiceImpl implements BucketService {
 
         HttpSession session = getSession();
 
-        Object object = session.getAttribute(authService.getAuthUser().getEmail());
+        Object object = session.getAttribute("userBucket");
 
         Map<Long, Integer> order = getDishesFromSession(object);
         Long dishId = dish.getId();
         order.put(dishId, order.containsKey(dishId) ? order.get(dishId) + 1 : 1);
 
-        String email = authService.getAuthUser().getEmail();
-        log.info("Session key: {}", email);
-        log.info("Attributes in session: {}", Collections.list(session.getAttributeNames()));
-
-
         Double totalPrice = (Double) session.getAttribute("price");
         totalPrice = totalPrice != null ? totalPrice : 0.0;
         totalPrice += dish.getPrice();
 
-        session.setAttribute(authService.getAuthUser().getEmail(), order);
+        session.setAttribute("userBucket", order);
         session.setAttribute("price", totalPrice);
         return dish;
     }
@@ -80,14 +75,27 @@ public class BucketServiceImpl implements BucketService {
     @Override
     public Map<DishDto, Integer> getBucket() {
         HttpSession session = getSession();
-        Map<Long, Integer> order = getDishesFromSession(session.getAttribute(authService.getAuthUser().getEmail()));
+        Map<Long, Integer> order = getDishesFromSession(session.getAttribute("userBucket"));
 
         return order.entrySet()
                 .stream()
                 .collect(Collectors.toMap(
-                        e ->dishService.findDishById(e.getKey()) ,
+                        e -> dishService.findDishById(e.getKey()),
                         Map.Entry::getValue
                 ));
+    }
+
+    @Override
+    public void removeDishById(Long dishId) {
+        Assert.notNull(dishId, "dish id cannot be null");
+        Assert.isTrue(dishId > 0, "dish id must be greater than 0");
+
+        Map<Long, Integer> dishes = getDishesFromSession(getSession().getAttribute("userBucket"));
+
+        dishes.computeIfPresent(dishId, (k, v) -> {
+            if (v >= 0) return null;
+            else return --v;
+        });
     }
 
     @Override
@@ -95,5 +103,4 @@ public class BucketServiceImpl implements BucketService {
         HttpSession session = getSession();
         session.removeAttribute(authService.getAuthUser().getEmail());
     }
-
 }

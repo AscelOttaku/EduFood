@@ -23,7 +23,11 @@
                         <span class="dish-price">${dishDto.price!0} сом</span>
                         <span class="dish-total">= ${dishDto.price * quantity} сом</span>
                     </div>
-                    <input type="hidden" name="dishIds" value="${dishDto.id!''}">
+
+                    <form method="post" action="/bucket/${dishDto.id}" style="display:inline;">
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">-</button>
+                    </form>
                 </div>
             </#list>
 
